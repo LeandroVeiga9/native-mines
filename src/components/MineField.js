@@ -2,13 +2,18 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Field from './Field';
 
-export default function MineField({ board }) {
+export default function MineField({ board, onOpenField, onSelectField }) {
 
   const rows = board.map((row, r) => {
     const columns = row.map((field, c) => {
-      return <Field {...field} key={c} />
+      return <Field
+        {...field}
+        onOpen={() => onOpenField(r, c)}
+        onSelect={e => onSelectField(r, c)}
+        key={c}
+      />
     })
-    return <View style={{flexDirection: 'row'}} key={r}>{columns}</View>
+    return <View style={{ flexDirection: 'row' }} key={r}>{columns}</View>
   })
 
   return (

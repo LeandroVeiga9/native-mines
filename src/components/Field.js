@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native';
 import params from '../params';
 import Mine from './Mine';
 import Flag from './Flag';
 
-export default function Field({ mined, opened, nearMines, exploded, flagged }) {
+export default function Field({ mined, opened, nearMines, exploded, flagged, onOpen, onSelect }) {
 
 
   const styleField = [styles.field]
@@ -15,7 +15,7 @@ export default function Field({ mined, opened, nearMines, exploded, flagged }) {
   if (!opened && !exploded) styleField.push(styles.regular)
 
   let color = null
-  if (nearMines > 0){
+  if (nearMines > 0) {
     if (nearMines == 1) color = '#2a28d7'
     if (nearMines == 2) color = '#2b520f'
     if (nearMines > 2 && nearMines < 6) color = '#f9060a'
@@ -23,15 +23,21 @@ export default function Field({ mined, opened, nearMines, exploded, flagged }) {
   }
 
   return (
-    <View style={styleField}>
-      {(!mined && opened && nearMines > 0) &&
-        <Text style={[styles.label, {color: color}]} >
-          {nearMines}
-        </Text>
-      }
-      {(mined && opened) && <Mine /> }
-      {(flagged && !opened) && <Flag />}
-    </View>
+    <TouchableWithoutFeedback 
+      onPress={onOpen}
+      onLongPress={onSelect}
+    >
+
+      <View style={styleField}>
+        {(!mined && opened && nearMines > 0) &&
+          <Text style={[styles.label, { color: color }]} >
+            {nearMines}
+          </Text>
+        }
+        {(mined && opened) && <Mine />}
+        {(flagged && !opened) && <Flag />}
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
